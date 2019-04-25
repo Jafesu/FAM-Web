@@ -7,8 +7,8 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require ('express-session');
 var ejs = require('ejs');
-const access = fs.createWriteStream(dir + '/node.access.log', { flags: 'a' })
-      , error = fs.createWriteStream(dir + '/node.error.log', { flags: 'a' });
+const access = fs.createWriteStream(dir + 'logs/node.access.log', { flags: 'a' })
+      , error = fs.createWriteStream(dir + 'logs/node.error.log', { flags: 'a' });
 
 // redirect stdout / stderr
 proc.stdout.pipe(access);
