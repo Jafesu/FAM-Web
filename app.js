@@ -28,14 +28,16 @@ app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/frontend/resources')));
 app.use('/css', express.static(path.join(__dirname, '/frontend/resources/css')));
 app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
+app.use('/css', express.static(path.join(__dirname, '/node_modules/font-awesome/css')));
+app.use('/css', express.static(path.join(__dirname, '/node_modules/ionicons/dist/css')));
 app.use('/fonts',  express.static(path.join(__dirname, '/frontend/resources/fonts')));
+app.use('/fonts', express.static(path.join(__dirname, '/node_modules/font-awesome/fonts')));
 app.use('/fonts', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/fonts')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use('/js', express.static(path.join(__dirname, '/frontend/resources/js')));
 app.use('/images', express.static(path.join(__dirname, '/frontend/resources/images')));
 app.use('/vendor', express.static(path.join(__dirname, '/frontend/resources/vendor')));
-app.use('/bower_components', express.static(path.join(__dirname, '/frontend/resources/bower_components')));
 
 app.set('views', './frontend/views/');
 app.set('view engine', 'ejs');
