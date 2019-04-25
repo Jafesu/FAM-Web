@@ -35,23 +35,41 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist'))
 app.use('/js', express.static(path.join(__dirname, '/frontend/resources/js')));
 app.use('/images', express.static(path.join(__dirname, '/frontend/resources/images')));
 app.use('/vendor', express.static(path.join(__dirname, '/frontend/resources/vendor')));
+app.use('/bower_components', express.static(path.join(__dirname, '/frontend/resources/bower_components')));
 
 app.set('views', './frontend/views/');
 app.set('view engine', 'ejs');
 
 var router = express.Router();
+
+app.use(function(req, res, next) {
+    res.locals.first = req.session.first;
+    res.locals.last = req.session.last;
+    res.locals.username = req.session.username;
+    res.locals.first = req.session.first;
+    res.locals.last = req.session.last;
+    res.locals.gender = req.session.gender;
+    res.locals.birthday = req.session.birthday;
+    res.locals.email = req.session.email;
+    res.locals.phone = req.session.phone;
+    res.locals.userid = req.session.userid;
+    res.locals.loggedin = req.session.loggedin;
+    res.locals.regmonth = req.session.regmonth;
+    res.locals.regday = req.session.regday;
+    res.locals.regyear = req.session.regyear;
+    next();
+  });
+const profileRouter = require('./backend/routes/profileroutes')();
+
+app.use('/profile', profileRouter);
+
 // test route
 app.get('/', (req, res) => {
     if (req.session.loggedin) {
         res.render(
             'index',
             {
-                username: req.session.username,
-                gender: req.session.gender,
-                birthday: req.session.birthday,
-                email: req.session.email,
-                phone: req.session.phone,
-                userid: req.session.userid,
+                
             }
         );
     }else{
@@ -60,6 +78,9 @@ app.get('/', (req, res) => {
         );
     }
 });
+
+
+
 
 app.get('/loginpartial', function (req, res) { 
     res.render('partials/users/login');
@@ -86,3 +107,52 @@ app.get('/logout', function(req, res, next) {
   });
 app.use('/api', router);
 app.listen(5000);
+
+
+
+
+
+
+
+// app.get('/profile', (req, res) => {
+//     if (req.session.loggedin) {
+//         res.render('profile',
+//             {
+//                 loggedin: true,
+//                 username: req.session.username,
+//                 first: req.session.first,
+//                 last: req.session.last,
+//                 gender: req.session.gender,
+//                 birthday: req.session.birthday,
+//                 email: req.session.email,
+//                 phone: req.session.phone,
+//                 userid: req.session.userid,
+//                 regmonth: req.session.regmonth,
+//                 regday: req.session.regday,
+//                 regyear: req.session.regyear
+//             }
+//         )
+//     }else {
+//         res.render('profile',
+//             {
+//                 loggedin: false
+//             }
+//         )
+//     }
+// })
+
+// app.get('/profile/:username', (req, res) => {
+//     if (req.session.loggedin) {
+//         res.render('profile',
+//             {
+//                 loggedin: true,
+//             }
+//         )
+//     }else {
+//         res.render('profile',
+//             {
+//                 loggedin: false
+//             }
+//         )
+//     }
+// })

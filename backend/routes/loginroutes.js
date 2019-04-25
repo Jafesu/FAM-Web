@@ -37,6 +37,51 @@ function decrypt(text){
   dec += decipher.final('utf8');
   return dec;
 }
+function createdDate(date){
+  var year = date.substring(0, 4)
+  var month = date.substring(5, 7)
+  var day = date.substring(8, 10)
+
+  switch (month) {
+    case '01':
+      month = 'Jan';
+      break;
+    case '02':
+      month = 'Feb';
+      break;
+    case '03':
+      month = 'Mar';
+      break;
+    case '04':
+      month = 'April';
+      break;
+    case '05':
+      month = 'May';
+      break;
+    case '06':
+      month = 'June';
+      break;
+    case '07':
+      month = 'July';
+      break;
+    case '08':
+      month = 'Aug';
+      break;
+    case '09':
+      month = 'Sept';
+      break;
+    case '10':
+      month = 'Oct';
+      break;
+    case '11':
+      month = 'Nov';
+      break;
+    case '12':
+      month = 'Dec';
+      break;
+  }
+  return [month, day, year];
+}
 
 exports.register = function(req,res){
     console.log("req",req.body);
@@ -70,8 +115,19 @@ exports.register = function(req,res){
           // console.log('The solution is: ', results);
           if(results.length >0){
             console.log(results)
+            console.log(createdDate(results[0].created))
+            console.log(createdDate(results[0].created)[0])
+            console.log(createdDate(results[0].created)[1])
+            console.log(createdDate(results[0].created)[2])
+
+
             req.session.loggedin = true;
             req.session.username = results[0].username;
+            req.session.regmonth = createdDate(results[0].created)[0];
+            req.session.regday = createdDate(results[0].created)[1];
+            req.session.regyear = createdDate(results[0].created)[2];
+            req.session.first = results[0].first;
+            req.session.last = results[0].last;
             req.session.gender = results[0].gender;
             req.session.birthday = results[0].birthday;
             req.session.email = results[0].email;
@@ -102,7 +158,19 @@ exports.register = function(req,res){
         if(results[0].password == password){
           req.session.loggedin = true;
           console.log(results)
+          console.log(createdDate(results[0].created))
+          console.log(createdDate(results[0].created)[0])
+          console.log(createdDate(results[0].created)[1])
+          console.log(createdDate(results[0].created)[2])
+
+
+          req.session.loggedin = true;
           req.session.username = results[0].username;
+          req.session.regmonth = createdDate(results[0].created)[0];
+          req.session.regday = createdDate(results[0].created)[1];
+          req.session.regyear = createdDate(results[0].created)[2];
+          req.session.first = results[0].first;
+          req.session.last = results[0].last;
           req.session.gender = results[0].gender;
           req.session.birthday = results[0].birthday;
           req.session.email = results[0].email;
