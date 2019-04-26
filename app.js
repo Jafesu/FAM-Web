@@ -36,6 +36,7 @@ app.use('/fonts', express.static(path.join(__dirname, '/node_modules/bootstrap/d
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use('/js', express.static(path.join(__dirname, '/frontend/resources/js')));
+app.use('/js', express.static(path.join(__dirname, '/node_modules/fastclick/lib')));
 app.use('/images', express.static(path.join(__dirname, '/frontend/resources/images')));
 app.use('/vendor', express.static(path.join(__dirname, '/frontend/resources/vendor')));
 
@@ -51,6 +52,7 @@ app.use(function(req, res, next) {
     res.locals.first = req.session.first;
     res.locals.last = req.session.last;
     res.locals.gender = req.session.gender;
+    res.locals.pp = req.session.pp;
     res.locals.birthday = req.session.birthday;
     res.locals.email = req.session.email;
     res.locals.phone = req.session.phone;

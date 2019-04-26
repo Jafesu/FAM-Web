@@ -3,11 +3,11 @@
 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-    
-          <!-- Sidebar user panel (optional) -->
+          <% if(loggedin){ %>
+            <!-- Sidebar user panel (optional) -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img src="<%= pp %>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p><%= first %> <%= last %></p>
@@ -47,6 +47,14 @@
             </li>
           </ul>
           <!-- /.sidebar-menu -->
+          <% }else{ %>
+            <div class="user-panel">
+              <button onclick="location.href = '/';"  class="btn btn-lg btn-info">Login/Register</button>
+            </div>
+            
+          <% } %>
+          
+
         </section>
         <!-- /.sidebar -->
       </aside>

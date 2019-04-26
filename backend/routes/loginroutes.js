@@ -83,6 +83,64 @@ function createdDate(date){
   return [month, day, year];
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function getDefaultAvatar(gender){
+  var avatar;
+  if(gender === 'Male'){
+    ppid = getRandomInt(3);
+    switch (ppid) {
+      case 0:
+        avatar =  '/images/users/default_avatars/avatar.png'
+        break;
+      case 1:
+        avatar =  '/images/users/default_avatars/avatar4.png'
+        break;
+      case 2:
+        avatar =  '/images/users/default_avatars/avatar5.png'
+        break;
+      default:
+        break;
+    }
+  }else if(gender === 'Female'){
+    ppid = getRandomInt(2);
+    switch (ppid) {
+      case 0:
+        avatar =  '/images/users/default_avatars/avatar2.png'
+        break;
+      case 1:
+        avatar =  '/images/users/default_avatars/avatar3.png'
+        break;
+      default:
+        break;
+    }
+  }else{
+    ppid = getRandomInt(5);
+    switch (ppid) {
+      case 0:
+        avatar =  '/images/users/default_avatars/avatar.png'
+        break;
+      case 1:
+        avatar =  '/images/users/default_avatars/avatar4.png'
+        break;
+      case 2:
+        avatar =  '/images/users/default_avatars/avatar5.png'
+        break;
+      case 3:
+        avatar =  '/images/users/default_avatars/avatar2.png'
+        break;
+      case 4:
+        avatar =  '/images/users/default_avatars/avatar3.png'
+        break;
+      default:
+        break;
+    }
+  }
+  return avatar;
+}
+
 exports.register = function(req,res){
     console.log("req",req.body);
     var today = new Date();
@@ -91,6 +149,7 @@ exports.register = function(req,res){
       "email":req.body.email,
       "birthday":req.body.birthday,
       "gender":req.body.gender,
+      "pp":getDefaultAvatar(req.body.gender),
       "phone":req.body.phone,
       "created":today,
       "modified":today,
@@ -114,12 +173,7 @@ exports.register = function(req,res){
         }else{
           // console.log('The solution is: ', results);
           if(results.length >0){
-            console.log(results)
-            console.log(createdDate(results[0].created))
-            console.log(createdDate(results[0].created)[0])
-            console.log(createdDate(results[0].created)[1])
-            console.log(createdDate(results[0].created)[2])
-
+            console.log(results[0].pp);
 
             req.session.loggedin = true;
             req.session.username = results[0].username;
@@ -129,10 +183,12 @@ exports.register = function(req,res){
             req.session.first = results[0].first;
             req.session.last = results[0].last;
             req.session.gender = results[0].gender;
+            req.session.pp = results[0].pp;
             req.session.birthday = results[0].birthday;
             req.session.email = results[0].email;
             req.session.phone = results[0].phone;
             req.session.userid = results[0].userid;
+            console.log(req.session.pp);
             res.redirect('/');
           }
         }
@@ -156,14 +212,7 @@ exports.register = function(req,res){
       // console.log('The solution is: ', results);
       if(results.length >0){
         if(results[0].password == password){
-          req.session.loggedin = true;
-          console.log(results)
-          console.log(createdDate(results[0].created))
-          console.log(createdDate(results[0].created)[0])
-          console.log(createdDate(results[0].created)[1])
-          console.log(createdDate(results[0].created)[2])
-
-
+          
           req.session.loggedin = true;
           req.session.username = results[0].username;
           req.session.regmonth = createdDate(results[0].created)[0];
@@ -172,6 +221,7 @@ exports.register = function(req,res){
           req.session.first = results[0].first;
           req.session.last = results[0].last;
           req.session.gender = results[0].gender;
+          req.session.pp = results[0].pp;
           req.session.birthday = results[0].birthday;
           req.session.email = results[0].email;
           req.session.phone = results[0].phone;

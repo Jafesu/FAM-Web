@@ -17,11 +17,7 @@ function router(loggeduser, loggedin){
     profileRouter.route('/')
     .get((req, res) => {
         if(req.session.loggedin){
-            res.render(
-                'profile',
-                {
-                }
-            )
+            res.redirect('/profile/'+req.session.username)
         }else{
             res.redirect('/')
         }
