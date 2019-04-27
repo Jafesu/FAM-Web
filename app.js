@@ -61,6 +61,7 @@ app.use(function(req, res, next) {
     res.locals.regmonth = req.session.regmonth;
     res.locals.regday = req.session.regday;
     res.locals.regyear = req.session.regyear;
+    res.locals.brand = 'RLConnect';
     next();
   });
 const profileRouter = require('./backend/routes/profileroutes')();
@@ -70,19 +71,11 @@ app.use('/profile', profileRouter);
 // test route
 app.get('/', (req, res) => {
     if (req.session.loggedin) {
-        res.render(
-            'index',
-            {
-                
-            }
-        );
+        res.render('index');
     }else{
-        res.render(
-            'auth'
-        );
+        res.render('auth');
     }
 });
-
 
 
 

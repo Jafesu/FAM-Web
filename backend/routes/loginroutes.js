@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 const dbsettings = require('../settings/db.json');
 var crypto = require('crypto');
-
+var alert = require('alert-node');
 
 console.log(dbsettings);
 
@@ -141,59 +141,70 @@ function getDefaultAvatar(gender){
   return avatar;
 }
 
+function login(req, results){
+  
+}
+
 exports.register = function(req,res){
     console.log("req",req.body);
     var today = new Date();
     var users={
       "username":req.body.username,
       "email":req.body.email,
-      "birthday":req.body.birthday,
-      "gender":req.body.gender,
-      "pp":getDefaultAvatar(req.body.gender),
       "phone":req.body.phone,
       "created":today,
       "modified":today,
       "password":encrypt(req.body.password).substring(0,254)
     }
-    connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
-    if (error) {
-      console.log("error ocurred",error);
-      res.send({
-        "code":400,
-        "failed":"error ocurred"
-      })
-    }else{
-      connection.query('SELECT * FROM users WHERE email = ?',[req.body.email], function (error, results, fields) {
-        if (error) {
-          // console.log("error ocurred",error);
-          res.send({
-            "code":400,
-            "failed":"error ocurred"
-          })
+    connection.query('SELECT * FROM users WHERE email = ?',[req.body.email], function (error, results, fields) {
+      if (error) {
+        console.log("error ocurred",error);
+        res.send({
+          "code":400,
+          "failed":"error ocurred"
+        })
+      }else{
+        if(results.length === 0){
+          connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
+            if (error) {
+              console.log("error ocurred",error);
+              res.send({
+                "code":400,
+                "failed":"error ocurred"
+              })
+            }else{
+              connection.query('SELECT * FROM users WHERE email = ?',[req.body.email], function (error, results, fields) {
+                if (error) {
+                  // console.log("error ocurred",error);
+                  res.send({
+                    "code":400,
+                    "failed":"error ocurred"
+                  })
+                }else{
+                  // console.log('The solution is: ', results);
+                  if(results.length >0){
+                    console.log(results[0].pp);
+        
+                    req.session.loggedin = true;
+                    req.session.username = results[0].username;
+                    req.session.regmonth = createdDate(results[0].created)[0];
+                    req.session.regday = createdDate(results[0].created)[1];
+                    req.session.regyear = createdDate(results[0].created)[2];
+                    req.session.email = results[0].email;
+                    req.session.phone = results[0].phone;
+                    req.session.userid = results[0].userid;
+                    res.redirect('/profile/create');
+                    
+                  }
+                }
+                });
+            }
+            });
         }else{
-          // console.log('The solution is: ', results);
-          if(results.length >0){
-            console.log(results[0].pp);
-
-            req.session.loggedin = true;
-            req.session.username = results[0].username;
-            req.session.regmonth = createdDate(results[0].created)[0];
-            req.session.regday = createdDate(results[0].created)[1];
-            req.session.regyear = createdDate(results[0].created)[2];
-            req.session.first = results[0].first;
-            req.session.last = results[0].last;
-            req.session.gender = results[0].gender;
-            req.session.pp = results[0].pp;
-            req.session.birthday = results[0].birthday;
-            req.session.email = results[0].email;
-            req.session.phone = results[0].phone;
-            req.session.userid = results[0].userid;
-            console.log(req.session.pp);
-            res.redirect('/');
-          }
+          alert('Account already exists with that email please try again', 'window');
+          res.redirect('/');
         }
-        });
-    }
+      }
     });
   }
 
@@ -212,17 +223,11 @@ exports.register = function(req,res){
       // console.log('The solution is: ', results);
       if(results.length >0){
         if(results[0].password == password){
-          
           req.session.loggedin = true;
           req.session.username = results[0].username;
           req.session.regmonth = createdDate(results[0].created)[0];
           req.session.regday = createdDate(results[0].created)[1];
           req.session.regyear = createdDate(results[0].created)[2];
-          req.session.first = results[0].first;
-          req.session.last = results[0].last;
-          req.session.gender = results[0].gender;
-          req.session.pp = results[0].pp;
-          req.session.birthday = results[0].birthday;
           req.session.email = results[0].email;
           req.session.phone = results[0].phone;
           req.session.userid = results[0].userid;
