@@ -69,10 +69,3 @@
 
 })(jQuery);
 
-var $result = $('#form'); 
-$('#login').click(function() {
-    $result.load('/loginpartial');
-});
-$('#register').click(function() {
-    $result.load('/registerpartial');
-});

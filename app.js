@@ -39,6 +39,7 @@ app.use('/js', express.static(path.join(__dirname, '/frontend/resources/js')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/fastclick/lib')));
 app.use('/images', express.static(path.join(__dirname, '/frontend/resources/images')));
 app.use('/vendor', express.static(path.join(__dirname, '/frontend/resources/vendor')));
+app.use('/app-assets', express.static(path.join(__dirname, '/frontend/resources/app-assets')));
 
 app.set('views', './frontend/views/');
 app.set('view engine', 'ejs');
@@ -65,27 +66,29 @@ app.use(function(req, res, next) {
     next();
   });
 const profileRouter = require('./backend/routes/profileroutes')();
+const partialRouter = require('./backend/routes/partialroutes')();
+
+
+
 
 app.use('/profile', profileRouter);
+app.use('/partial', partialRouter);
 
 // test route
 app.get('/', (req, res) => {
     if (req.session.loggedin) {
         res.render('index');
     }else{
-        res.render('auth');
+      res.render('auth');
     }
 });
 
+app.get('/new', (req, res) => {
+  res.render('newindex');
+})
 
 
-app.get('/loginpartial', function (req, res) { 
-    res.render('partials/users/login');
-});
 
-app.get('/registerpartial', function (req, res) { 
-    res.render('partials/users/register');
-});
 
 //route to handle user registration
 router.post('/register',login.register);
